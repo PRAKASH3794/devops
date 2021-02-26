@@ -6,11 +6,11 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [ DEV ]
     paths-ignore:
       - 'kube/*'
   pull_request:
-    branches: [ master ]
+    branches: [ DEV ]
     paths-ignore:
       - 'kube/*'
 
@@ -65,5 +65,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: rakesh635/addressbook:latest,rakesh635/addressbook:${{ steps.buildnumber.outputs.build_number }}
+          tags: rakesh635/addressbook:dev${{ steps.buildnumber.outputs.build_number }}
 
