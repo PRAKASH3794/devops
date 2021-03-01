@@ -72,11 +72,7 @@ jobs:
         run: echo 'Test Deploy'
       - name: Dummy function and non=functional testing
         run: echo 'Fummy testing stage'
-  Create_Push_Request:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
+      
       - name: Make changes to pull request
         run: date +%s > report.txt
 
