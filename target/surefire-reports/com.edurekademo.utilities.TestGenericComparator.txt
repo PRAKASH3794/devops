@@ -1,20 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.edurekademo.utilities.TestGenericComparator
 -------------------------------------------------------------------------------
-Tests run: 14, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.024 sec <<< FAILURE! - in com.edurekademo.utilities.TestGenericComparator
-testSortEmpNameAsc(com.edurekademo.utilities.TestGenericComparator)  Time elapsed: 0.016 sec  <<< FAILURE!
-junit.framework.ComparisonFailure: null expected:<[Asma]> but was:<[Rajan]>
-	at com.edurekademo.utilities.TestGenericComparator.testSortEmpNameAsc(TestGenericComparator.java:94)
-
-testSortEmpNameDesc(com.edurekademo.utilities.TestGenericComparator)  Time elapsed: 0 sec  <<< FAILURE!
-junit.framework.ComparisonFailure: null expected:<[Vellman]> but was:<[Sriram]>
-	at com.edurekademo.utilities.TestGenericComparator.testSortEmpNameDesc(TestGenericComparator.java:103)
-
-testSortEmpIDDesc(com.edurekademo.utilities.TestGenericComparator)  Time elapsed: 0 sec  <<< FAILURE!
-junit.framework.ComparisonFailure: null expected:<S[omebody]> but was:<S[riram]>
-	at com.edurekademo.utilities.TestGenericComparator.testSortEmpIDDesc(TestGenericComparator.java:127)
-
-testSortEmpIDAsc(com.edurekademo.utilities.TestGenericComparator)  Time elapsed: 0 sec  <<< FAILURE!
-junit.framework.ComparisonFailure: null expected:<[Raj]an> but was:<[Vellm]an>
-	at com.edurekademo.utilities.TestGenericComparator.testSortEmpIDAsc(TestGenericComparator.java:116)
-
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 sec - in com.edurekademo.utilities.TestGenericComparator
