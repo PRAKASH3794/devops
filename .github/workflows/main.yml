@@ -6,11 +6,11 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ DEV ]
+    branches: [ Feature* ]
     paths-ignore:
       - 'kube/*'
   pull_request:
-    branches: [ DEV ]
+    branches: [ Feature* ]
     paths-ignore:
       - 'kube/*'
 
