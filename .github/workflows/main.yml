@@ -40,8 +40,8 @@ jobs:
         uses: einaregilsson/build-number@v3
         with:
           token: ${{secrets.github_token}}        
-      - name: CodeQualityCheck
-        run: mvn sonar:sonar -Dsonar.projectKey=addressBook -Dsonar.host.url=${{ secrets.DEV_SONARQUBEURL }} -Dsonar.login=${{ secrets.DEV_SONARQUBETOKEN }}
+      #- name: CodeQualityCheck
+      #  run: mvn sonar:sonar -Dsonar.projectKey=addressBook -Dsonar.host.url=${{ secrets.DEV_SONARQUBEURL }} -Dsonar.login=${{ secrets.DEV_SONARQUBETOKEN }}
       - name: Run Insider (SAST)
         uses: insidersec/insider-action@v0
         with:
