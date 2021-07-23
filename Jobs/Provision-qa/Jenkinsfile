@@ -5,7 +5,6 @@ pipeline {
     tools {
         maven 'maven'
         jdk 'JAVA_HOME'
-        Terraform 'terraform'
     }
 	options {
         skipDefaultCheckout() 
