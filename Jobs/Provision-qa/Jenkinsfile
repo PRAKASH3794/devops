@@ -1,15 +1,24 @@
 pipeline {
-    agent { label 'master' }
-	options { skipDefaultCheckout() }	
-    	stages {
-        	stage("Checkout SCM") {
-			steps {
-				cleanWs()
-				echo 'checkout scm'
-				checkout scm
-			}
-		}
-					
+    agent { 
+        label 'master' 
+    }
+    tools {
+        maven 'maven'
+        jdk 'JAVA_HOME'
+        Terraform 'terraform'
+    }
+	options {
+        skipDefaultCheckout() 
+    }
+    stages {
+        stage("Checkout SCM") {
+            steps {
+			    cleanWs()
+			    echo 'checkout scm'
+			    checkout scm
+		    }
+	    }
+        			
 		stage('Build and Package (with code quality check)') {
 			steps {
 				echo 'Clean Build'
@@ -29,21 +38,12 @@ pipeline {
                 terraform output'''
 			}
 		}
+
         stage('Deploy war file to tomcat container') {
             steps {
                 echo 'copy file to container'
             }
         }
-        post {
-				always {
-					archiveArtifacts artifacts: 'target/**/*.war'
-				}
-		    }
-        }     
-        
-    tools {
-        maven 'maven'
-        //jdk 'openjdk8'
     }
     post {
         always {
