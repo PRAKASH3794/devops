@@ -24,8 +24,7 @@ pipeline {
 				sh "ls"
 				sh "pwd"
 				sh "mvn clean compile package -Dtest=\\!TestRunner* -DfailIfNoTests=false"
-                sh "ls -l target/"
-                archiveArtifacts artifacts: 'target/**'
+                archiveArtifacts artifacts: 'target/*.war'
 			}
 		}
 		
