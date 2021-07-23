@@ -1,0 +1,65 @@
+pipeline {
+    agent { label 'master' }
+	options { skipDefaultCheckout() }	
+    	stages {
+        	stage("Checkout SCM") {
+			steps {
+				cleanWs()
+				echo 'checkout scm'
+				checkout scm
+			}
+		}
+					
+		stage('Build and Package (with code quality check)') {
+			steps {
+				echo 'Clean Build'
+				sh "ls"
+				sh "pwd"
+				sh "mvn clean compile package -Dtest=\\!TestRunner* -DfailIfNoTests=false"
+                sh "ls -l target/"
+                archiveArtifacts artifacts: 'target/**'
+			}
+		}
+		
+		stage('Spin new Developer QA Environment with Tomcat 8') {
+			steps {
+                sh ''' cd Jobs/Provision-qa
+                terraform init
+                terraform plan
+                terraform output'''
+			}
+		}
+        stage('Deploy war file to tomcat container') {
+            steps {
+                echo 'copy file to container'
+            }
+        }
+        post {
+				always {
+					archiveArtifacts artifacts: 'target/**/*.war'
+				}
+		    }
+        }     
+        
+    tools {
+        maven 'maven'
+        //jdk 'openjdk8'
+    }
+    post {
+        always {
+            echo 'JENKINS PIPELINE'
+        }
+        success {
+            echo 'JENKINS PIPELINE SUCCESSFUL'
+        }
+        failure {
+            echo 'JENKINS PIPELINE FAILED'
+        }
+        unstable {
+            echo 'JENKINS PIPELINE WAS MARKED AS UNSTABLE'
+        }
+        changed {
+            echo 'JENKINS PIPELINE STATUS HAS CHANGED SINCE LAST EXECUTION'
+        }
+    }
+}
