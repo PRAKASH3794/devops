@@ -52,17 +52,19 @@ pipeline {
 
         stage('Deploy war file to tomcat container') {
             steps {
-                echo 'copy file to container'
-                //sh 'terraform output server-public-ip'
-                //def fileContent = sh(returnStdout: true, script: "terraform output server-public-ip")
-                //writeFile file: "${WORKSPACE}/server-ip.txt", text: fileContent
-                //sh 'terraform output server-public-ip > server-ip.txt'
-                sh "cat ${WORKSPACE}/server-ip.txt"
-                //String server_ip = sh 'terraform output server-public-ip'
-                //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
-                echo $env.serverIP
-                sh 'ssh ubuntu@$env.serverIP'
-                sh 'scp target/*.war $env.serverIP:/var/lib/tomcat9/webapps/'
+                script {
+                    echo 'copy file to container'
+                    //sh 'terraform output server-public-ip'
+                    //def fileContent = sh(returnStdout: true, script: "terraform output server-public-ip")
+                    //writeFile file: "${WORKSPACE}/server-ip.txt", text: fileContent
+                    //sh 'terraform output server-public-ip > server-ip.txt'
+                    sh "cat ${WORKSPACE}/server-ip.txt"
+                    //String server_ip = sh 'terraform output server-public-ip'
+                    //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
+                    echo "$env.serverIP"
+                    sh "ssh ubuntu@${env.serverIP}"
+                    sh "scp target/*.war ${env.serverIP}:/var/lib/tomcat9/webapps/"
+                }
             }
         }
     }
