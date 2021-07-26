@@ -40,8 +40,9 @@ pipeline {
                 //String cmd = ("terraform output")
                 //env.server-ip = sh(script: cmd, returnStdout: true)
                 //echo $env.server-ip
-                def env.ret = sh(script: 'terraform output -raw server-public-ip', returnStdout: true)
-                println env.ret
+                def ret = sh(script: 'terraform output -raw server-public-ip', returnStdout: true)
+                env.output = ret
+                println env.output
                 sh '''touch server-ip.txt'
                 env.serverIP=$(terraform output -raw server-public-ip)
                 '''
