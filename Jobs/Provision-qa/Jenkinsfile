@@ -33,6 +33,7 @@ pipeline {
                 sh ''' cd Jobs/Provision-qa
                 terraform init
                 terraform plan
+                terraform apply --auto-approve
                 terraform output'''
 			}
 		}
@@ -40,6 +41,13 @@ pipeline {
         stage('Deploy war file to tomcat container') {
             steps {
                 echo 'copy file to container'
+                sh 'terraform output server-public-ip'
+                def fileContent = sh(returnStdout: true, script: "terraform output server-public-ip")
+                writeFile file: "${WORKSPACE}/server-ip.txt", text: fileContent
+                sh "cat ${WORKSPACE}/server-ip.txt"
+                String server_ip = sh 'terraform output server-public-ip'
+                echo $server_ip
+                ssh ubuntu@server_ip
             }
         }
     }

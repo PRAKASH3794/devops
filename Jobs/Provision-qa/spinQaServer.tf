@@ -10,7 +10,7 @@ resource "aws_instance" "tomcat_instance" {
     instance_type = "t2.micro"
     #availability_zone = "us-east-1a"
     key_name = "AWS-REGION"
-    vpc_security_group_ids = [aws_security_group.allow_web.id]
+    vpc_security_group_ids = [aws_security_group.tomcat_sg.id]
 
     user_data = <<-EOF
                 #!/bin/bash
@@ -26,8 +26,8 @@ resource "aws_instance" "tomcat_instance" {
 }
 
 # Create a Security Group to allow port 22,80,443
-resource "aws_security_group" "allow_web" {
-  name        = "allow_web"
+resource "aws_security_group" "tomcat_sg" {
+  name        = "tomcat_sg"
   description = "Allow web traffic"
   #vpc_id      = aws_vpc.vpc-web.id
 
@@ -71,7 +71,7 @@ resource "aws_security_group" "allow_web" {
   }
 
   tags = {
-    Name = "allow_web"
+    Name = "tomcat_sg"
   }
 }
 
