@@ -62,7 +62,7 @@ pipeline {
                     //String server_ip = sh 'terraform output server-public-ip'
                     //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
                     echo "$env.serverIP"
-                    sh "ssh ubuntu@${env.serverIP}"
+                    sh "ssh -T ubuntu@${env.serverIP}"
                     sh "scp target/*.war ${env.serverIP}:/var/lib/tomcat9/webapps/"
                 }
             }
