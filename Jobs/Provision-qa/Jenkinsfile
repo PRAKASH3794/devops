@@ -35,13 +35,15 @@ pipeline {
                 terraform plan
                 terraform apply --auto-approve
                 terraform output
-                terraform output.server-public-ip
+                terraform output -raw server-public-ip
                 '''
                 //String cmd = ("terraform output")
                 //env.server-ip = sh(script: cmd, returnStdout: true)
                 //echo $env.server-ip
+                def env.ret = sh(script: 'terraform output -raw server-public-ip', returnStdout: true)
+                println env.ret
                 sh '''touch server-ip.txt'
-                env.serverIP=$(terraform output)
+                env.serverIP=$(terraform output -raw server-public-ip)
                 '''
                 sh 'terraform output > server-ip.txt'
 			}
