@@ -30,24 +30,26 @@ pipeline {
 		
 		stage('Spin new Developer QA Environment with Tomcat 8') {
 			steps {
-                sh ''' cd Jobs/Provision-qa
-                terraform init
-                terraform plan
-                terraform apply --auto-approve
-                terraform output
-                terraform output -raw server-public-ip
-                '''
-                //String cmd = ("terraform output")
-                //env.server-ip = sh(script: cmd, returnStdout: true)
-                //echo $env.server-ip
-                def ret = sh(script: 'terraform output -raw server-public-ip', returnStdout: true)
-                env.output = ret
-                println env.output
-                sh '''touch server-ip.txt'
-                env.serverIP=$(terraform output -raw server-public-ip)
-                '''
-                sh 'terraform output > server-ip.txt'
-			}
+                script {
+                    sh ''' cd Jobs/Provision-qa
+                    terraform init
+                    terraform plan
+                    terraform apply --auto-approve
+                    terraform output
+                    terraform output -raw server-public-ip
+                    '''
+                    //String cmd = ("terraform output")
+                    //env.server-ip = sh(script: cmd, returnStdout: true)
+                    //echo $env.server-ip
+                    def ret = sh(script: 'terraform output -raw server-public-ip', returnStdout: true)
+                    env.output = ret
+                    println env.output
+                    sh '''touch server-ip.txt'
+                    env.serverIP=$(terraform output -raw server-public-ip)
+                    '''
+                    sh 'terraform output > server-ip.txt'
+			    }
+            }
 		}
 
         stage('Deploy war file to tomcat container') {
