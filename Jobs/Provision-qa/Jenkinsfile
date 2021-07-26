@@ -36,7 +36,7 @@ pipeline {
                 terraform apply --auto-approve
                 terraform output
                 '''
-                env.server-ip = sh(script: terraform output, returnStdout: true)
+                env.server-ip = sh(script: ('terraform output'), returnStdout: true)
                 echo $env.server-ip
                 //sh 'terraform output > server_ip.txt'
 			}
