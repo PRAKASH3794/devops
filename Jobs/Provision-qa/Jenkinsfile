@@ -40,8 +40,9 @@ pipeline {
                 //String cmd = ("terraform output")
                 //env.server-ip = sh(script: cmd, returnStdout: true)
                 //echo $env.server-ip
-                sh 'touch server-ip.txt'
-                env.serverIP = $(sh 'terraform output.server-public-ip')
+                sh '''touch server-ip.txt'
+                env.serverIP=$(terraform output.server-public-ip)
+                '''
                 sh 'terraform output.server-public-ip > server-ip.txt'
 			}
 		}
