@@ -34,22 +34,26 @@ pipeline {
                 terraform init
                 terraform plan
                 terraform apply --auto-approve
-                terraform output'''
+                terraform output
+                '''
+                env.server-ip = sh(script: terraform output, returnStdout: true)
+                echo $env.server-ip
+                //sh 'terraform output > server_ip.txt'
 			}
 		}
 
         stage('Deploy war file to tomcat container') {
             steps {
                 echo 'copy file to container'
-                sh 'terraform output server-public-ip'
+                //sh 'terraform output server-public-ip'
                 //def fileContent = sh(returnStdout: true, script: "terraform output server-public-ip")
                 //writeFile file: "${WORKSPACE}/server-ip.txt", text: fileContent
-                sh 'terraform output server-public-ip > server-ip.txt'
-                sh "cat ${WORKSPACE}/server-ip.txt"
+                //sh 'terraform output server-public-ip > server-ip.txt'
+                //sh "cat ${WORKSPACE}/server-ip.txt"
                 //String server_ip = sh 'terraform output server-public-ip'
-                sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
-                echo $ip_address
-                sh 'ssh ubuntu@$ip_address'
+                //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
+                echo $env.server-ip
+                sh 'ssh ubuntu@$env.server-ip'
             }
         }
     }
