@@ -32,19 +32,19 @@ pipeline {
 			steps {
                 script {
                     sh ''' cd Jobs/Provision-qa
-                    touch server-ip.txt
+                    touch ${WORKSPACE}/server-ip.txt
                     terraform init
                     terraform plan
                     terraform apply --auto-approve
                     terraform output
-                    terraform output -raw server-public-ip > server-ip.txt
+                    terraform output -raw server-public-ip > ${WORKSPACE}/server-ip.txt
                     '''
                     //String cmd = ("terraform output")
                     //env.server-ip = sh(script: cmd, returnStdout: true)
                     //echo $env.server-ip
-                    def ret = sh(script: 'terraform output -raw server-public-ip', returnStdout: true)
+                    def ret = sh(script: 'cat ${WORKSPACE}/server-ip.txt', returnStdout: true)
                     env.serverIP = ret
-                    echo "${serverIP}"
+                    echo "${env.serverIP}"
                     println env.serverIP
 			    }
             }
