@@ -35,11 +35,14 @@ pipeline {
                 terraform plan
                 terraform apply --auto-approve
                 terraform output
+                terraform output.server-public-ip
                 '''
                 //String cmd = ("terraform output")
                 //env.server-ip = sh(script: cmd, returnStdout: true)
                 //echo $env.server-ip
-                sh 'terraform output > server-ip.txt'
+                sh 'touch server-ip.txt'
+                String env.server-ip = $(sh 'terraform output.server-public-ip')
+                sh 'terraform output.server-public-ip > server-ip.txt'
 			}
 		}
 
@@ -55,6 +58,7 @@ pipeline {
                 //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
                 echo $server-ip
                 sh 'ssh ubuntu@$server-ip'
+                sh 'scp target/*.war $server-ip:/var/lib/tomcat9/webapps/'
             }
         }
     }
