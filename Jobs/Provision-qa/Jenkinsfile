@@ -47,7 +47,7 @@ pipeline {
                 sh 'terraform output server-public-ip > server-ip.txt'
                 sh "cat ${WORKSPACE}/server-ip.txt"
                 //String server_ip = sh 'terraform output server-public-ip'
-                sh "export ip_address=$(cat ${WORKSPACE}/server-ip.txt)"
+                sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
                 echo $ip_address
                 sh 'ssh ubuntu@$ip_address'
             }
