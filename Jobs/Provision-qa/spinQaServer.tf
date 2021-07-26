@@ -6,7 +6,7 @@ provider "aws" {
 
 # Create Ubuntu Server and install Tomcat server
 resource "aws_instance" "tomcat_instance" {
-    ami = "ami-08e6b682a466887dd"
+    ami = "ami-08353a25e80beea3e"
     instance_type = "t2.micro"
     #availability_zone = "us-east-1a"
     key_name = "AWS-REGION"
