@@ -75,7 +75,7 @@ resource "aws_security_group" "tomcat_sg" {
   }
 }
 
-output "server-public-ip" {
+output {
   description = "Public IP address of EC2 Instance"
   value = aws_instance.tomcat_instance.public_ip
 }
