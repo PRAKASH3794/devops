@@ -51,7 +51,8 @@ pipeline {
                         echo "$env.serverIP"
                         sh 'cp "\$AWS_SERVER_KEY" .'
                         sh 'chmod 400 aws_prakash.pem'
-                        sh "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i aws_prakash.pem target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
+                        sh "ssh-keyscan -H ${env.serverIP} >> ~/.ssh/known_hosts"
+                        sh "sudo scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i aws_prakash.pem -r target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
                     }
                 }
             }
