@@ -19,6 +19,7 @@ resource "aws_instance" "tomcat_instance" {
                 sudo apt install tomcat9 tomcat9-admin -y
                 sudo systemctl enable tomcat9
                 sudo ufw allow from any to any port 8080 proto tcp
+                sudo chown -R ubuntu /var/lib/tomcat9/webapps/
                 EOF
     tags = {
       "Name" = "Tomcat-server"
