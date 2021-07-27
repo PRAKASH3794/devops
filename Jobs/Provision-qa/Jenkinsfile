@@ -37,7 +37,7 @@ pipeline {
                     terraform plan
                     terraform apply --auto-approve
                     terraform output
-                    terraform output -raw server-public-ip > ${WORKSPACE}/server-ip.txt
+                    terraform output -raw server-public-dns > ${WORKSPACE}/server-ip.txt
                     '''
                     //String cmd = ("terraform output")
                     //env.server-ip = sh(script: cmd, returnStdout: true)
@@ -53,17 +53,19 @@ pipeline {
         stage('Deploy war file to tomcat container') {
             steps {
                 script {
-                    echo 'copy file to container'
-                    //sh 'terraform output server-public-ip'
-                    //def fileContent = sh(returnStdout: true, script: "terraform output server-public-ip")
-                    //writeFile file: "${WORKSPACE}/server-ip.txt", text: fileContent
-                    //sh 'terraform output server-public-ip > server-ip.txt'
-                    sh "cat ${WORKSPACE}/server-ip.txt"
-                    //String server_ip = sh 'terraform output server-public-ip'
-                    //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
-                    echo "$env.serverIP"
-                    //sh "ssh -T ubuntu@${env.serverIP}"
-                    sh "scp -r target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
+                    withCredentials([file(credentialsId: 'AWS_SERVER', variable: 'AWS_SERVER_KEY')]) {
+                        echo 'copy file to container'
+                        //sh 'terraform output server-public-ip'
+                        //def fileContent = sh(returnStdout: true, script: "terraform output server-public-ip")
+                        //writeFile file: "${WORKSPACE}/server-ip.txt", text: fileContent
+                        //sh 'terraform output server-public-ip > server-ip.txt'
+                        sh "cat ${WORKSPACE}/server-ip.txt"
+                        //String server_ip = sh 'terraform output server-public-ip'
+                        //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
+                        echo "$env.serverIP"
+                        //sh "ssh -T ubuntu@${env.serverIP}"
+                        sh "scp -i ${AWS_SERVER_KEY} target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
+                    }
                 }
             }
         }

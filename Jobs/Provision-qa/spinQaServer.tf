@@ -79,3 +79,8 @@ output "server-public-ip" {
   description = "Public IP address of EC2 Instance"
   value = aws_instance.tomcat_instance.public_ip
 }
+
+output "server-public-dns" {
+  description = "Public DNS ip address of EC2 Instance"
+  value = aws_instance.tomcat_instance.public_dns
+}
