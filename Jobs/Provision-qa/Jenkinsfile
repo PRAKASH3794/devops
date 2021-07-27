@@ -64,7 +64,10 @@ pipeline {
                         //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
                         echo "$env.serverIP"
                         //sh "ssh -T ubuntu@${env.serverIP}"
-                        sh "scp -i ${AWS_SERVER_KEY} target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
+                        sh 'cp "\$AWS_SERVER_KEY" .'
+                        sh 'ls -alrt'
+                        sh 'chmod 400 aws_prakash.pem'
+                        sh "scp -i aws_prakash.pem target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
                     }
                 }
             }
