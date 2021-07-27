@@ -51,6 +51,8 @@ pipeline {
                         echo "$env.serverIP"
                         sh 'cp "\$AWS_SERVER_KEY" .'
                         sh 'chmod 400 aws_prakash.pem'
+                        echo 'Wait for 2 minutes for spinning of Tomcat server'
+                        sh 'sleep 120'
                         sh "ssh-keyscan -H ${env.serverIP} >> ~/.ssh/known_hosts"
                         sh "sudo scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i aws_prakash.pem -r target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
                     }
