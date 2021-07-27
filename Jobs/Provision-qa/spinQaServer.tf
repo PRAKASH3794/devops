@@ -9,7 +9,7 @@ resource "aws_instance" "tomcat_instance" {
     ami = "ami-00399ec92321828f5"
     instance_type = "t2.micro"
     #availability_zone = "us-east-1a"
-    key_name = "AWS-REGION"
+    key_name = "aws_prakash"
     vpc_security_group_ids = [aws_security_group.tomcat_sg.id]
 
     user_data = <<-EOF
