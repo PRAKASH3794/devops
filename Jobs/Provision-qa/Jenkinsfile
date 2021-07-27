@@ -21,8 +21,6 @@ pipeline {
 		stage('Build and Package (with code quality check)') {
 			steps {
 				echo 'Clean Build'
-				sh "ls"
-				sh "pwd"
 				sh "mvn clean compile package -Dtest=\\!TestRunner* -DfailIfNoTests=false"
                 archiveArtifacts artifacts: 'target/*.war'
 			}
@@ -36,16 +34,11 @@ pipeline {
                     terraform init
                     terraform plan
                     terraform apply --auto-approve
-                    terraform output
                     terraform output -raw server-public-dns > ${WORKSPACE}/server-ip.txt
                     '''
-                    //String cmd = ("terraform output")
-                    //env.server-ip = sh(script: cmd, returnStdout: true)
-                    //echo $env.server-ip
                     def ret = sh(script: 'cat ${WORKSPACE}/server-ip.txt', returnStdout: true)
                     env.serverIP = ret
                     echo "${env.serverIP}"
-                    println env.serverIP
 			    }
             }
 		}
@@ -54,20 +47,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'AWS_SERVER', variable: 'AWS_SERVER_KEY')]) {
-                        echo 'copy file to container'
-                        //sh 'terraform output server-public-ip'
-                        //def fileContent = sh(returnStdout: true, script: "terraform output server-public-ip")
-                        //writeFile file: "${WORKSPACE}/server-ip.txt", text: fileContent
-                        //sh 'terraform output server-public-ip > server-ip.txt'
-                        sh "cat ${WORKSPACE}/server-ip.txt"
-                        //String server_ip = sh 'terraform output server-public-ip'
-                        //sh 'export ip_address="$(cat ${WORKSPACE}/server-ip.txt)"'
+                        echo 'copy war file to container'
                         echo "$env.serverIP"
-                        //sh "ssh -T ubuntu@${env.serverIP}"
                         sh 'cp "\$AWS_SERVER_KEY" .'
-                        sh 'ls -alrt'
                         sh 'chmod 400 aws_prakash.pem'
-                        sh "scp -i aws_prakash.pem target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
+                        sh "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i aws_prakash.pem target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps/"
                     }
                 }
             }
