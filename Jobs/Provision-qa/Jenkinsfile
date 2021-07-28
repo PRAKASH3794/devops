@@ -7,6 +7,7 @@ pipeline {
         jdk 'JAVA_HOME'
     }
 	options {
+        timestamps()
         skipDefaultCheckout() 
     }
     stages {
@@ -54,10 +55,7 @@ pipeline {
                         echo 'Wait for 2 minutes for spinning up of Tomcat server'
                         sh 'sleep 120'
                         sh "ssh-keyscan -H ${env.serverIP} >> ~/.ssh/known_hosts"
-                        sh 'whoami'
-                        sh 'sudo su ubuntu'
-                        sh 'whoami'
-                        sh "sudo -SE scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i aws_prakash.pem -r target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps"
+                        sh "scp -i aws_prakash.pem -r target/*.war ubuntu@${env.serverIP}:/var/lib/tomcat9/webapps"
                     }
                 }
             }
